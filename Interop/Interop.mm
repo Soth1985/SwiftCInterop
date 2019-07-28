@@ -14,9 +14,9 @@ struct EngineContextData
 };
 
 
-void EngineContextOperation(EngineContext ctx, float f)
+void EngineContextOperation(EngineContext* ctx, float f)
 {
-    ctx.Impl->i = f;
+    ctx->Impl->i = f;
 }
 
 EngineContext EngineContextCreateContext()
@@ -27,12 +27,11 @@ EngineContext EngineContextCreateContext()
     return Result;
 }
 
-EngineContext EngineContextCreateContext2(EngineVersion v)
+void EngineContextDestroyContext(EngineContext* ctx)
 {
-    return EngineContextCreateContext();
-}
-
-void EngineContextDestroyContext(EngineContext ctx)
-{
-    delete ctx.Impl;
+    if (ctx->Impl)
+    {
+        delete ctx->Impl;
+        ctx->Impl = nullptr;
+    }
 }

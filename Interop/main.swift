@@ -13,7 +13,7 @@ protocol CCode
     associatedtype Item
     init()
     static func alloc() -> Item
-    func dealloc()
+    mutating func dealloc()
 }
 
 class Wrapper<T:CCode>
@@ -22,7 +22,7 @@ class Wrapper<T:CCode>
     
     init()
     {
-        Ref = T.alloc() as! T;
+        Ref = T.alloc() as! T
     }
     
     deinit
@@ -34,21 +34,20 @@ class Wrapper<T:CCode>
 extension EngineContext : CCode
 {
     
+    
 }
 
 func Execute()
 {
-    let context : EngineContext = EngineContext.alloc()
+    var context : EngineContext = EngineContext.alloc()
     context.operation(f: 1.0)
     
-    let context2 = EngineContext(v: .Version1)
-    context2.operation(f: 1.0)
-    
     context.dealloc()
-    context2.dealloc()
     
     let wrapped = Wrapper<EngineContext>()
-    wrapped.Ref.operation(f:0.0)
+    wrapped.Ref.operation(f:10.0)
+    
+    print("Done!")
 }
 
 Execute()
