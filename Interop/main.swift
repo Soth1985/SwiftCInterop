@@ -37,16 +37,36 @@ extension EngineContext : CCode
     
 }
 
-//func FromC(
+func castToVoid(_ object: AnyObject) -> UnsafeMutableRawPointer
+{
+    return UnsafeMutableRawPointer(Unmanaged.passUnretained(object).toOpaque())
+}
+
+func castFromVoid<T:AnyObject>(_ ptr: UnsafeMutableRawPointer?) -> T
+{
+    return Unmanaged<T>.fromOpaque(ptr!).takeUnretainedValue()
+}
+
+class CallbackSite
+{
+    func onResult(_ f: Float)
+    {
+        print("swift callback with data: \(f)")
+    }
+}
 
 func Execute()
 {
+    var cbSite = CallbackSite();
     var context : EngineContext = EngineContext.alloc()
-    var temp : Int = 10
     context.setOperationHandler { (f: Float) in
-        print("cb: \(f)")
+        print("swift callback: \(f)")
     }
-    context.operation(f: 1.0)
+    context.setOperationHandlerWithData(h: { (f: Float, ptr) in
+        let data : CallbackSite = castFromVoid(ptr)
+        data.onResult(f)
+    }, data: castToVoid(cbSite))
+    context.operation(f: 9.0)
     context.dealloc()
     
     let wrapped = Wrapper<EngineContext>()

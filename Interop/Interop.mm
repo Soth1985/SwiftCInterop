@@ -12,6 +12,8 @@ struct EngineContextData
 {
     float i;
     EngineContextOperationHandler h;
+    EngineContextOperationHandlerWithData hd;
+    void* d;
 };
 
 
@@ -21,6 +23,9 @@ void EngineContextOperation(EngineContext* ctx, float f)
     
     if (ctx->Impl->h)
         ctx->Impl->h(f);
+    
+    if (ctx->Impl->hd)
+        ctx->Impl->hd(f, ctx->Impl->d);
 }
 
 EngineContext EngineContextCreateContext()
@@ -29,6 +34,8 @@ EngineContext EngineContextCreateContext()
     Result.Impl = new EngineContextData();
     Result.Impl->i = 0.0f;
     Result.Impl->h = nullptr;
+    Result.Impl->hd = nullptr;
+    Result.Impl->d = nullptr;
     return Result;
 }
 
@@ -44,4 +51,10 @@ void EngineContextDestroyContext(EngineContext* ctx)
 void EngineContextSetOperationHandler(EngineContext* ctx, EngineContextOperationHandler h)
 {
     ctx->Impl->h = h;
+}
+
+void EngineContextSetOperationHandlerWithData(EngineContext* ctx, EngineContextOperationHandlerWithData h, void* data)
+{
+    ctx->Impl->hd = h;
+    ctx->Impl->d = data;
 }
