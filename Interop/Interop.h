@@ -22,9 +22,11 @@ struct EngineContext
 };
 
 typedef struct EngineContext EngineContext;
+typedef void (*EngineContextOperationHandler)(float f);
 
 EngineContext EngineContextCreateContext(void)CF_SWIFT_NAME(EngineContext.alloc());
 void EngineContextDestroyContext(EngineContext* ctx)CF_SWIFT_NAME(EngineContext.dealloc(self:));
 void EngineContextOperation(EngineContext* ctx, float f) CF_SWIFT_NAME(EngineContext.operation(self:f:));
+void EngineContextSetOperationHandler(EngineContext* ctx, EngineContextOperationHandler h) CF_SWIFT_NAME(EngineContext.setOperationHandler(self:h:));
 
 #endif /* Interop_h */
