@@ -57,15 +57,18 @@ class CallbackSite
 
 func Execute()
 {
-    var cbSite = CallbackSite();
+    let cbSite = CallbackSite();
     var context : EngineContext = EngineContext.alloc()
+    
     context.setOperationHandler { (f: Float) in
         print("swift callback: \(f)")
     }
+    
     context.setOperationHandlerWithData(h: { (f: Float, ptr) in
         let data : CallbackSite = castFromVoid(ptr)
         data.onResult(f)
     }, data: castToVoid(cbSite))
+    
     context.operation(f: 9.0)
     context.dealloc()
     
