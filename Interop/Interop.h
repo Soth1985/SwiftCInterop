@@ -16,6 +16,12 @@ typedef NS_ENUM(int, EngineVersion){
     Version2
 };
 
+typedef NS_OPTIONS(int, EngineOptions)
+{
+    Option1 = 1<<0,
+    Option2 = 1<<1
+};
+
 struct EngineContext
 {
     struct EngineContextData* Impl;

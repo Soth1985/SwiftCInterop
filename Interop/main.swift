@@ -75,6 +75,9 @@ func Execute()
     let wrapped = Wrapper<EngineContext>()
     wrapped.Ref.operation(f:10.0)
     
+    let opts : EngineOptions = [.Option1, .Option2]
+    print("Options: \(opts.rawValue)")
+    
     print("Done!")
 }
 
